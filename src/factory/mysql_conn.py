@@ -13,17 +13,19 @@ class MysqlConn:  # pragma: no cover
     def __init__(self):
         self.__engine = None
         self.__session = None
+
     def get_engine(self, config: DbConfig):
-        engine  = create_engine(
-                config.connection_string.format(config.user, config.password, config.host, config.port),
-                poolclass=pool.QueuePool)
+        engine = create_engine(
+            config.connection_string.format(config.user, config.password, config.host, config.port),
+            poolclass=pool.QueuePool)
         inspect_engine = inspect(engine).get_schema_names()
 
         if config.database not in inspect_engine:
             engine.execute(f"CREATE DATABASE {config.database}")
         return create_engine(
-                config.connection_string.format(config.user, config.password, config.host, config.port) + f"/{config.database}",
-                poolclass=pool.QueuePool)
+            config.connection_string.format(config.user, config.password, config.host,
+                                            config.port) + f"/{config.database}",
+            poolclass=pool.QueuePool)
 
     def connect(self, config: DbConfig) -> DbConnection:
         try:
@@ -61,7 +63,7 @@ class MysqlConn:  # pragma: no cover
     def find_filter(self, model, attr, value):
         self.create_session()
         query = self.__session.query(model)
-        query = query.filter(getattr(model, attr).like("%%%s%%" % value)).one_or_none()
+        query = query.filter(getattr(model, attr) == value).one_or_none()
         self.__session.close()
         return query
 
@@ -90,19 +92,27 @@ class MysqlConn:  # pragma: no cover
         self.__session.close()
         return query
 
-    def update_element_seller(self, element):
-        element_dict = element.get_dict_model()
-        element_dict.pop('_sa_instance_state')
+    def update_element_seller(self, element, sales):
+
         self.create_session()
-        result = self.__session.query(Seller).filter(Seller.id == element.id).update(element_dict)
+        result = self.__session.query(Seller).filter(Seller.id == element.id).update({"sales": sales})
         self.__session.commit()
         self.__session.close()
 
         if result:
-            return element.get_dict_model()
+            return element
         else:
             return None
 
     def create_table(self, table):
         if not inspect(self.__engine).has_table(table.name):
             table.create(self.__engine)
+
+    def delete_row(self, model, attr, value):
+        self.create_session()
+        query = self.__session.query(model)
+        query = query.filter(getattr(model, attr) == value).delete()
+        self.__session.commit()
+
+        self.__session.close()
+        return query

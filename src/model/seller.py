@@ -17,3 +17,6 @@ class Seller(Base):
         Retorna representação da classe no formato __dict__
         """
         return self.__dict__
+
+    def __str__(self):
+        return str(f"id: {self.id} | Name: {self.name} | Sales: {self.sales}")

@@ -1,4 +1,3 @@
-from src.model.sales import Sales
 from src.service.service_login import ServiceLogin
 from src.service.service_menu import ServiceMenu
 from src.service.service_product import ServiceProduct
@@ -9,18 +8,17 @@ service_seller = ServiceSellers()
 service_login = ServiceLogin()
 service_menu = ServiceMenu()
 service_product = ServiceProduct()
-service_sales = ServiceSales()
+service_sales = ServiceSales(service_seller)
 
 
 def main():
     system_login = True
-    system_execute = True
     while system_login:
         system_execute = True
         is_logged = service_login.init_login(service_seller)
         if not is_logged:
             for seller in service_seller.get_sellers():
-                print(seller.id, seller.name, seller.sales)
+                print(seller)
             return
         else:
             while system_execute:

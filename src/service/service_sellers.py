@@ -37,9 +37,12 @@ class ServiceSellers:
         return returned_seller
 
     @staticmethod
-    def update_sellers(seller):
+    def update_sellers(seller, sales):
         """
         update sellers in database
         """
-        returned_seller = item_db_stock.update_element_seller(seller)
+        returned_seller = item_db_stock.update_element_seller(seller, sales)
         return returned_seller
+
+    def get_seller_by_id(self, id_seller):
+        return item_db_stock.find_filter(Seller, 'id', id_seller)
