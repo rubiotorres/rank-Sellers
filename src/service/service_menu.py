@@ -38,7 +38,8 @@ class ServiceMenu:
 
     def register_sales(self):
         SalesUtils.call_register_sales(self.service_sales, self.service_product, self.service_seller,
-                                              self.seller)
+                                       self.seller)
+        self.show_sales()
 
     def show_sales(self):
         SalesUtils.call_show_sales(self.service_sales)
