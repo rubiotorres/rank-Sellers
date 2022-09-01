@@ -1,14 +1,16 @@
+from src.envs.environment_variable import IS_TEST
 from src.factory.mysql_conn import MysqlConn
 from src.factory.mysql_db_config import MysqlDbConfig
 from src.model.seller import Seller
 
 item_db_stock = MysqlConn()
-item_db_stock.connect(MysqlDbConfig())
+if not IS_TEST:
+    item_db_stock.connect(MysqlDbConfig())
+    item_db_stock.create_table(Seller.__table__)
 
 
 class ServiceSellers:
     def __init__(self):
-        item_db_stock.create_table(Seller.__table__)
         self.cache_sellers = {}
 
     @staticmethod

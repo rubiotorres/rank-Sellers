@@ -17,3 +17,6 @@ class Product(Base):
         Retorna representação da classe no formato __dict__
         """
         return self.__dict__
+
+    def __str__(self):
+        return f"Id: {self.id} | Name: {self.name} | Price: {self.price}"

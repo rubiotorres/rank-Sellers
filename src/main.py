@@ -6,7 +6,6 @@ from src.service.service_sellers import ServiceSellers
 
 service_seller = ServiceSellers()
 service_login = ServiceLogin()
-service_menu = ServiceMenu()
 service_product = ServiceProduct()
 service_sales = ServiceSales(service_seller)
 
@@ -22,7 +21,7 @@ def main():
             return
         else:
             while system_execute:
-                system_execute = service_menu.init_menu(service_product, service_sales, service_seller, is_logged)
+                system_execute = ServiceMenu(service_product, service_sales, service_seller, is_logged).init_menu()
 
 
 if __name__ == '__main__':

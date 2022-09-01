@@ -1,14 +1,16 @@
+from src.envs.environment_variable import IS_TEST
 from src.factory.mysql_conn import MysqlConn
 from src.factory.mysql_db_config import MysqlDbConfig
 from src.model.product import Product
 
 item_db_stock = MysqlConn()
-item_db_stock.connect(MysqlDbConfig())
+if not IS_TEST:
+    item_db_stock.connect(MysqlDbConfig())
+    item_db_stock.create_table(Product.__table__)
 
 
 class ServiceProduct:
     def __init__(self):
-        item_db_stock.create_table(Product.__table__)
         self.cache_products = {}
 
     @staticmethod
@@ -26,7 +28,7 @@ class ServiceProduct:
             self.cache_products[new_product.id] = new_product
             return new_product
         else:
-            return None or check_registered
+            return check_registered
 
     def get_product(self):
         """

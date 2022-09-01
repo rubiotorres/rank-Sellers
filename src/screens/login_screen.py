@@ -1,13 +1,15 @@
+from src.utils.utils import Utils
+
+
 class LoginScreen:
     @staticmethod
     def print_login_screen():
-        print("Welcome to the system")
-        print("Please enter the name of the current seller or 0 to exit:")
+        Utils.print_log("Welcome to the system!!!\nPlease enter the name of the current seller or blank to exit:")
 
     @staticmethod
     def print_login_denied():
-        print("Your user is not allowed access, check the registered users below:")
+        Utils.print_log("Your user is not allowed access, check the registered users below:")
 
     @staticmethod
     def print_login_accepted(name):
-        print(f"Welcome{name}!!!")
+        Utils.print_log(f"Welcome{name}!!!")

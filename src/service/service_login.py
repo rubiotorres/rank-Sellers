@@ -5,7 +5,7 @@ class ServiceLogin:
     def init_login(self, service_seller):
         LoginScreen.print_login_screen()
         login_response = str(input())
-        if login_response == "0":
+        if not login_response:
             return None
         seller_dict = self.mount_user_dict(login_response)
         is_seller_registered = service_seller.is_seller_already_registered(seller_dict)
